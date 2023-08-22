@@ -1,0 +1,17 @@
+.formulario-tabla-container {
+  display: flex;
+  justify-content: center;
+  align-items: start; /* Centrar verticalmente */
+  gap: 20px; /* Espacio entre los componentes */
+  margin: 20px;
+}
+
+.formulario {
+ 
+  padding: 20px;
+}
+
+.tabla {
+  border: 1px solid #ccc;
+  padding: 20px;
+}

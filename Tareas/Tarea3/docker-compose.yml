@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  db:
+    container_name: db
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'dbDocker'
+      MYSQL_PASSWORD: 'secret'
+      MYSQL_ROOT_PASSWORD: 'secret'
+    ports:
+      - '3311:3306'
+    expose:
+      - '3311'
+    volumes:
+      - ./db_data:/var/lib/mysql
+
+  backend:
+    container_name: backend
+    restart: always
+    build: ./server
+    ports:
+      - "8080:8000"
+    depends_on:
+      - db
+    links: 
+      - db
+  
+  frontend:
+    container_name: frontend_api
+    restart: always
+    build: ./Frontend/frontend
+    ports:
+      - "3002:3000"
+    depends_on:
+      - backend
+    links:
+      - backend
+  
+volumes:
+  db_data:
