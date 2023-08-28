@@ -1,0 +1,1 @@
+cmd_/home/mrrobot/Documentos/Tarea4_201603156/Module.symvers :=  scripts/mod/modpost -m -a     -o /home/mrrobot/Documentos/Tarea4_201603156/Module.symvers -T /home/mrrobot/Documentos/Tarea4_201603156/modules.order -i Module.symvers -e 

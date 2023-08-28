@@ -1,0 +1,1 @@
+cmd_/home/mrrobot/Documentos/Tarea4_201603156/ram_201603156.ko := ld -r -m elf_x86_64 -z noexecstack --build-id=sha1  -T scripts/module.lds -o /home/mrrobot/Documentos/Tarea4_201603156/ram_201603156.ko /home/mrrobot/Documentos/Tarea4_201603156/ram_201603156.o /home/mrrobot/Documentos/Tarea4_201603156/ram_201603156.mod.o;  true
