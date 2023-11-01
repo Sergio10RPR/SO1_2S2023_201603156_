@@ -1,0 +1,51 @@
+from flask import Flask, request, jsonify
+import json
+import redis
+
+app = Flask(__name__)
+
+# Conexión a la base de datos Redis
+redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+# Ruta para recibir datos JSON y almacenarlos en Redis
+@app.route('/agregar_alumno', methods=['POST'])
+def agregar_alumno():
+    data = request.get_json()
+    
+    # Verifica si el JSON recibido tiene las claves necesarias
+    if 'carnet' in data and 'nombre' in data and 'curso' in data and 'nota' in data and 'semestre' in data and 'year' in data:
+        carnet = data['carnet']
+        # Convierte el JSON en una cadena para almacenarlo en Redis
+        json_data = json.dumps(data)
+        
+        # Almacena los datos en Redis con el carnet como clave
+        redis_client.set(carnet, json_data)
+        
+        return "Alumno agregado correctamente.", 200
+    else:
+        return "JSON incompleto o incorrecto", 400
+
+# Ruta para consultar la cantidad de alumnos en un curso y semestre específico
+@app.route('/consultar', methods=['GET'])
+def consultar():
+    curso = request.args.get('curso')
+    semestre = request.args.get('semestre')
+    
+    # Obtén todas las claves almacenadas en Redis
+    keys = redis_client.keys('*')
+    
+    # Filtra las claves que coinciden con el curso y semestre especificados
+    alumnos_en_curso_semestre = []
+    
+    for key in keys:
+        data = json.loads(redis_client.get(key))
+        if data['curso'] == curso and data['semestre'] == semestre:
+            alumnos_en_curso_semestre.append(data)
+    
+    # Devuelve la cantidad de alumnos encontrados
+    return jsonify({'cantidad_alumnos': len(alumnos_en_curso_semestre)})
+@app.route('/hola_mundo', methods=['GET'])
+def hola_mundo():
+    return "Hola Mundo", 200
+if __name__ == '__main__':
+    app.run(debug=True)
